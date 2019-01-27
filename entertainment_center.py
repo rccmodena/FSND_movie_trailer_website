@@ -49,8 +49,8 @@ def main():
 
     # Creating the instance of the movie Raw
     raw = media.Movie("Raw", "2016")
-    raw.set_wikipedia("d/d2/Raw_%28film%29.png")
-    raw.set_poster_image("Raw_(film)")
+    raw.set_poster_image("d/d2/Raw_(film).png")
+    raw.set_wikipedia("Raw_(film)")
     raw.set_rotten_tomatoes("m/raw_2017")
     raw.set_imdb("title/tt4954522/")
     raw.set_trailer_youtube("watch?v=gFlXVX2af_Y")
