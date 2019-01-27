@@ -11,6 +11,9 @@ main_page_head = '''
     <meta charset="utf-8">
     <title>Fresh Tomatoes!</title>
 
+    <!-- Google Font Baloo Thambi -->
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Thambi" rel="stylesheet">
+
     <!-- Bootstrap 3 -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
@@ -19,6 +22,9 @@ main_page_head = '''
     <style type="text/css" media="screen">
         body {
             padding-top: 80px;
+            background-color: #03211C;
+            color: #7d9267;
+            font-family: 'Baloo Thambi', cursive;
         }
         #trailer .modal-dialog {
             margin-top: 200px;
@@ -38,9 +44,10 @@ main_page_head = '''
         .movie-tile {
             margin-bottom: 20px;
             padding-top: 20px;
+            border-radius: 40px;
         }
         .movie-tile:hover {
-            background-color: #EEE;
+            background-color: #03342e;
             cursor: pointer;
         }
         .scale-media {
@@ -56,6 +63,16 @@ main_page_head = '''
             top: 0;
             background-color: white;
         }
+        #id_navbar_top {
+            background: #7d9267;
+        }
+        #id_navbar-brand {
+            color: #03211C;
+        }
+        #id_navbar-brand:hover {
+            color: yellow;
+        }
+
     </style>
     <script type="text/javascript" charset="utf-8">
         // Pause the video when the modal is closed
@@ -104,10 +121,10 @@ main_page_content = '''
 
     <!-- Main Page Content -->
     <div class="container">
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-fixed-top" role="navigation" id="id_navbar_top">
         <div class="container">
           <div class="navbar-header">
-            <a class="navbar-brand" href="#">Fresh Tomatoes Movie Trailers</a>
+            <a id="id_navbar-brand" class="navbar-brand" href="#">Fresh Tomatoes Movie Trailers</a>
           </div>
         </div>
       </div>
@@ -135,16 +152,16 @@ def create_movie_tiles_content(movies):
     for movie in movies:
         # Extract the youtube ID from the url
         youtube_id_match = re.search(
-            r'(?<=v=)[^&#]+', movie.trailer_youtube_url)
+            r'(?<=v=)[^&#]+', movie.get_trailer_youtube())
         youtube_id_match = youtube_id_match or re.search(
-            r'(?<=be/)[^&#]+', movie.trailer_youtube_url)
+            r'(?<=be/)[^&#]+', movie.get_trailer_youtube())
         trailer_youtube_id = (youtube_id_match.group(0) if youtube_id_match
                               else None)
 
         # Append the tile for the movie with its content filled in
         content += movie_tile_content.format(
-            movie_title=movie.title,
-            poster_image_url=movie.poster_image_url,
+            movie_title=movie.get_title(),
+            poster_image_url=movie.get_poster_image(),
             trailer_youtube_id=trailer_youtube_id
         )
     return content
