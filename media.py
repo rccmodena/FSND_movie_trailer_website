@@ -30,19 +30,22 @@ class Movie():
         self.year = movie_year
 
         # The url to the image of the poster the movie
-        self.poster_image = ""
+        self.poster_image = (
+            "https://cdn.pixabay.com/photo/2017/02/16/02/54/"
+            "coming-soon-2070393_960_720.jpg"
+        )
 
         # The url to wikipedia
-        self.wikipedia = ""
+        self.wikipedia = "#"
 
         # The url to Roten Tomatoes
-        self.rotten_tomatoes = ""
+        self.rotten_tomatoes = "#"
 
         # The url to IMDb
-        self.imdb = ""
+        self.imdb = "#"
 
         # The youtube url to the trailer of the movie
-        self.trailer_youtube = ""
+        self.trailer_youtube = "#"
 
     def get_title(self):
         """ Get the title of the movie """
