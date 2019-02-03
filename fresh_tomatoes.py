@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+""" This module creates the site with the movies passed as a list """
 import webbrowser
 import os
 import re
@@ -30,55 +32,86 @@ main_page_head = '''<!DOCTYPE html>
         .modal-title{
             font-weight: bold;
         }
+        #ModalMovieTrailerDialog {
+            max-width: 672px;
+        }
+        #id_trailer_iframe{
+            margin-top: 25px;
+            border-style: none;
+        }
     </style>
 
     <script>
-        // Open the modal with movie information when clicking on the movie cards
-        $(document).on('click', '.movie-card', function (event) {
 
-            // Gather the information about the movie
-            var movie_title = $(this).attr('data-movie-title')
-            var movie_year = $(this).attr('data-movie-year')
-            var movie_wikipedia = $(this).attr('data-wikipedia')
-            var movie_rotten_tomatoes = $(this).attr('data-rotten-tomatoes')
-            var movie_imdb = $(this).attr('data-imdb')
+        //Run when the page is ready
+        $(function () {
 
-            //Open the modal with the movie details
-            $('#ModalMoviedetails').modal('toggle')
+            // Open the modal with movie information when clicking on the movie cards
+            $(".movie-card").click(function () {
 
-            //Display the correct movie title and year
-            $('#ModalMoviedetailsTitle').text(movie_title + ' ('+movie_year+')')
+                // Gather the information about the movie
+                var movie_title = $(this).attr('data-movie-title')
+                var movie_year = $(this).attr('data-movie-year')
+                var movie_trailer = $(this).attr('data-trailer-youtube-id')
+                var movie_wikipedia = $(this).attr('data-wikipedia')
+                var movie_rotten_tomatoes = $(this).attr('data-rotten-tomatoes')
+                var movie_imdb = $(this).attr('data-imdb')
 
-            //Add the correct path to wikipedia page of the movie
-            //If the wikipedia page was not informed, set the attribute onClick empty
-            if (movie_wikipedia != "#"){
-                $('#id_wikipedia').attr('onClick', "window.open('"+movie_wikipedia+"', '_blank');")
-            } else {
-                $('#id_wikipedia').attr('onClick', '');
-            }
+                //Open the modal with the movie details
+                $('#ModalMoviedetails').modal('toggle')
 
-            //Add the correct path to rotten tomatoes page of the movie
-            //If the rotten tomatoes page was not informed, set the attribute onClick empty
-            if (movie_rotten_tomatoes != "#"){
-                $('#id_rotten_tomatoes').attr('onClick', "window.open('"+movie_rotten_tomatoes+"', '_blank');")
-            } else {
-                $('#id_rotten_tomatoes').attr('onClick', '');
-            }
+                //Display the correct movie title and year
+                $('#ModalMoviedetailsTitle').text(movie_title + ' ('+movie_year+')')
 
-            //Add the correct path to imbdb page of the movie
-            //If the imdb page was not informed, set the attribute onClick empty
-            if (movie_imdb != "#"){
-                $('#id_imdb').attr('onClick', "window.open('"+movie_imdb+"', '_blank');")
-            } else {
-                $('#id_imdb').attr('onClick', '');
-            }
-        });
+                //Add the correct path to the trailer of the movie
+                //If the trailer was not informed, set the attribute onClick empty
+                if (movie_wikipedia != "#"){
+                    $('#id_trailer').attr('data-trailer-youtube-id', movie_trailer)
+                } else {
+                    $('#id_trailer').attr('onClick', '');
+                }
 
-        // Animate in the movies when the page loads
-        $(document).ready(function () {
+                //Add the correct path to wikipedia page of the movie
+                //If the wikipedia page was not informed, set the attribute onClick empty
+                if (movie_wikipedia != "#"){
+                    $('#id_wikipedia').attr('onClick', "window.open('"+movie_wikipedia+"', '_blank');")
+                } else {
+                    $('#id_wikipedia').attr('onClick', '');
+                }
+
+                //Add the correct path to rotten tomatoes page of the movie
+                //If the rotten tomatoes page was not informed, set the attribute onClick empty
+                if (movie_rotten_tomatoes != "#"){
+                    $('#id_rotten_tomatoes').attr('onClick', "window.open('"+movie_rotten_tomatoes+"', '_blank');")
+                } else {
+                    $('#id_rotten_tomatoes').attr('onClick', '');
+                }
+            });
+
+            // Start playing the video whenever the trailer modal is opened
+            $("#id_trailer").click(function () {
+                var trailerYouTubeId = $(this).attr('data-trailer-youtube-id')
+                var sourceUrl = 'http://www.youtube.com/embed/' + trailerYouTubeId + '?autoplay=1&html5=1';
+                $('#id_trailer_iframe').attr('src', sourceUrl);
+            });
+
+            // Animate the movie cards when the page loads
             $('.movie-card').hide().first().show("fast", function showNext() {
                 $(this).next("div").show("fast", showNext);
             });
+
+            //Set z-index when the trailer modal is about to be shown
+            $('#ModalMovieTrailer').on('show.bs.modal', function () {
+                $('#ModalMoviedetails').css('z-index', 1039);
+            });
+
+            //Set z-index when the trailer modal is fully hidden
+            $('#ModalMovieTrailer').on('hidden.bs.modal', function () {
+                $('#ModalMoviedetails').css('z-index', 1041);
+                // Pause the video when the modal is closed
+                $('#id_trailer_iframe').attr('src', '');
+            });
+
         });
 
     </script>
@@ -117,6 +150,23 @@ main_page_content = '''
 
         <main>
 
+            <!-- Modal with the Movie Trailer -->
+            <div class="modal fade" id="ModalMovieTrailer" tabindex="-1" role="dialog" aria-hidden="true">
+                <div id="ModalMovieTrailerDialog" class="modal-dialog modal-dialog-centered" role="document">
+                    <div id="id_ModalMovieTrailerContent" class="modal-content bg-dark text-white">
+                        <div class="modal-body">
+                            <div>
+                                <button type="button" class="close text-white" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div>
+                                <iframe id="id_trailer_iframe" width="640" height="360"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <!-- Modal with the Movie Information -->
             <div class="modal fade" id="ModalMoviedetails" tabindex="-1" role="dialog" aria-labelledby="ModalMoviedetailsTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -128,7 +178,7 @@ main_page_content = '''
                             </button>
                         </div>
                         <div class="modal-body">
-                            <button type="button" class="btn btn-danger btn-lg btn-block"><strong>Watch the Trailer</strong></button>
+                            <button id="id_trailer" type="button" class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#ModalMovieTrailer"><strong>Watch the Trailer</strong></button>
                             <button id="id_wikipedia" type="button" class="btn btn-info btn-lg btn-block"><strong>Wikipedia</strong></button>
                             <button id="id_rotten_tomatoes" type="button" class="btn btn-info btn-lg btn-block"><strong>Rotten Tomatoes</strong></button>
                             <button id="id_imdb" type="button" class="btn btn-info btn-lg btn-block"><strong>IMDb</strong></button>
@@ -168,6 +218,8 @@ movie_cards_content = '''
 
 
 def create_movie_cards_content(movies):
+    """ Creates the movie cards in the website """
+
     # The HTML content for this section of the page
     content = ''
     for movie in movies:
@@ -194,6 +246,8 @@ def create_movie_cards_content(movies):
 
 
 def open_movies_page(movies):
+    """ Creates the website and open it """
+
     # Create or overwrite the output file
     output_file = open('fresh_tomatoes.html', 'w')
 
