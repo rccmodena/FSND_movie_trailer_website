@@ -6,19 +6,19 @@ class Movie():
     """ This class provides a way to store movie related information """
 
     # Wikipedia Posters URL
-    POSTER_WIKI_URL = "https://upload.wikimedia.org/wikipedia/en/"
+    POSTER_WIKI_URL = ""
 
     # Wikipedia URL
-    WIKI_URL = "https://en.wikipedia.org/wiki/"
+    WIKI_URL = ""
 
     # Rotten Tomatoes URL
-    ROTTEN_TOMATOES_URL = "https://www.rottentomatoes.com/"
+    ROTTEN_TOMATOES_URL = ""
 
     # Imdb URL
-    IMDB_URL = "https://www.imdb.com/"
+    IMDB_URL = ""
 
     # Youtube URL
-    YOUTUBE_URL = "https://www.youtube.com/"
+    YOUTUBE_URL = ""
 
     def __init__(self, movie_title, movie_year):
         """ Constructor of the class Movie """
