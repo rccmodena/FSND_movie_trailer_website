@@ -86,6 +86,14 @@ main_page_head = '''<!DOCTYPE html>
                 } else {
                     $('#id_rotten_tomatoes').attr('onClick', '');
                 }
+
+                //Add the correct path to imdb page of the movie
+                //If the imdb page was not informed, set the attribute onClick empty
+                if (movie_imdb != "#"){
+                    $('#id_imdb').attr('onClick', "window.open('"+movie_imdb+"', '_blank');")
+                } else {
+                    $('#id_imdb').attr('onClick', '');
+                }
             });
 
             // Start playing the video whenever the trailer modal is opened
