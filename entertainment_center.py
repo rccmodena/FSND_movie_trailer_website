@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
-""" This module has only one function main().
+""" Creating the list of favorite movies
 
-    The function main() creates the list of favourite movies and generates an
-html file and open it.
+This module has only one function main() that:
+    - Creates the instances of the class movie, with the information about the
+    movies;
+    - Create a list with all the instances of the movies;
+    - Call the function open_movies_page of the module fresh_tomatoes, and pass
+    the list of movies as a parameter. This function will create the html file
+    and open it in a web browser.
 """
 
 import media
 import fresh_tomatoes
 
+
 def main():
-    """ Creates the list of favourite movies and generates an html file
-    and open it.
-    """
+    """ Creates the list of movies, generates an html file and open it."""
 
     # Creating the movie No Country for Old Man
     no_country = media.Movie("No Country for Old men", "2007")
@@ -49,7 +53,8 @@ def main():
     # Creating the instance of the movie The Devil's Rejects
     the_devils_rejects = media.Movie("The Devil's Rejects", "2005")
     the_devils_rejects.set_poster_image(
-        "https://upload.wikimedia.org/wikipedia/en/d/d6/Devils_rejects_ver2.jpg"
+        "https://upload.wikimedia.org/wikipedia/en/d/d6/"
+        "Devils_rejects_ver2.jpg"
     )
     the_devils_rejects.set_wikipedia(
         "https://en.wikipedia.org/wiki/The_Devil%27s_Rejects"
@@ -116,9 +121,8 @@ def main():
         house_jack_built
     ]
 
-    #Make the site with the movies in the list
+    # Make the site with the movies in the list
     fresh_tomatoes.open_movies_page(movies)
 
-# If executing this module run main() function
 if __name__ == '__main__':
     main()
